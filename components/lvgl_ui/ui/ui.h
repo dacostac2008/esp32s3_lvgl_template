@@ -7,29 +7,21 @@ extern "C" {
 
 #include "lvgl.h"
 
-/**
- * Generic placeholder UI — stands in for a SquareLine Studio export so the
- * project builds and runs before you have a real one. Re-exporting from
- * SquareLine into this folder (see README) overwrites this file; nothing
- * outside `ui/` depends on it being exactly this content, only on the
- * symbols below existing.
- *
- * It doubles as a smoke test for the display + touch BSP:
- *   - drag the arc  -> exercises touch tracking (and reveals a wrong
- *                      swap_xy/mirror_x/mirror_y touch calibration)
- *   - tap the button -> exercises touch taps + LVGL click events, and
- *                       flips the screen background color so it's obvious
- *                       even without reading the label
- */
+/* UI de "ESP Dashboard": solo crea los widgets (como un export de
+ * SquareLine). Los eventos y los datos van en components/lvgl_ui/screens/. */
 void ui_init(void);
 
-extern lv_obj_t *ui_scrMain;
-extern lv_obj_t *ui_lblTitle;
-extern lv_obj_t *ui_lblSubtitle;
-extern lv_obj_t *ui_arcTest;
-extern lv_obj_t *ui_lblArcValue;
-extern lv_obj_t *ui_btnTap;
-extern lv_obj_t *ui_lblTapCount;
+/* Pantalla de inicio */
+extern lv_obj_t *ui_scrSplash;
+extern lv_obj_t *ui_lblAppName;
+extern lv_obj_t *ui_lblLoading;
+
+/* Pantalla principal */
+extern lv_obj_t *ui_scrHome;
+extern lv_obj_t *ui_arcBattery;
+extern lv_obj_t *ui_lblBattery;
+extern lv_obj_t *ui_lblTemp;
+extern lv_obj_t *ui_lblUptime;
 
 #ifdef __cplusplus
 }
