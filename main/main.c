@@ -5,6 +5,7 @@
 #include "bsp_touch.h"
 #include "bsp_lvgl.h"
 #include "bsp_temp.h"
+#include "bsp_battery.h"
 
 #include "lvgl_ui.h"
 
@@ -16,6 +17,7 @@ void app_main(void) {
     bsp_touch_init(i2c_bus);
     ESP_ERROR_CHECK(bsp_lvgl_init());
     ESP_ERROR_CHECK(bsp_temp_init());
+    bsp_battery_init();
     bsp_display_brightness_init();
     bsp_display_set_brightness(100);
     // Always take LVGL mutex before doing anything with LVGL
