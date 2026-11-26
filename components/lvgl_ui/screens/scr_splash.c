@@ -19,8 +19,17 @@ static void puntos_cb(void *obj, int32_t value)
     lv_label_set_text((lv_obj_t *)obj, textos[value % 4]);
 }
 
+/* Se ejecuta cuando tocan cualquier parte de la pantalla del splash */
+static void al_tocar(lv_event_t *e)
+{
+    (void)e;
+    ui_screens_navigate(SCREEN_HOME);
+}
+
 void scr_splash_prepare(void)
 {
+    /* "Cuando toquen la pantalla del splash, ejecuta al_tocar" */
+    lv_obj_add_event_cb(ui_scrSplash, al_tocar, LV_EVENT_CLICKED, NULL);
     ESP_LOGD(TAG, "prepare");
 }
 
