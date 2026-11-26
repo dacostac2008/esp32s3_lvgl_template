@@ -49,6 +49,20 @@ static void actualizar_bateria(void)
     pintar_arco(pct);
 }
 
+/* Estado general segun la temperatura del chip: color + icono + texto */
+static void mostrar_estado(float celsius)
+{
+    if (celsius >= 70) {
+        lv_label_set_text(ui_lblEstado, LV_SYMBOL_CLOSE " Critico");
+        lv_obj_set_style_text_color(ui_lblEstado, lv_palette_main(LV_PALETTE_RED), 0);
+    } else if (celsius >= 55) {
+        lv_label_set_text(ui_lblEstado, LV_SYMBOL_WARNING " Alerta");
+        lv_obj_set_style_text_color(ui_lblEstado, lv_palette_main(LV_PALETTE_AMBER), 0);
+    } else {
+        lv_label_set_text(ui_lblEstado, LV_SYMBOL_OK " Normal");
+        lv_obj_set_style_text_color(ui_lblEstado, lv_palette_main(LV_PALETTE_GREEN), 0);
+    }
+}
 static void actualizar_temperatura(void)
 {
     float celsius = 0.0f;
