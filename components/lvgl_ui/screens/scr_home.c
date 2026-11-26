@@ -3,6 +3,7 @@
 #include "ui.h"
 #include "bsp_battery.h"
 #include "bsp_temp.h"
+#include "esp_timer.h"
 #include "esp_log.h"
 
 static const char *TAG = "scr_home";
@@ -45,11 +46,22 @@ static void actualizar_temperatura(void)
     int decimas = (int)(celsius * 10);
     lv_label_set_text_fmt(ui_lblTemp, "%d.%d C", decimas / 10, decimas % 10);
 }
+static void actualizar_tiempo(void)
+{
+    /* esp_timer_get_time() da los microsegundos desde que arranco la placa */
+    uint32_t total = (uint32_t)(esp_timer_get_time() / 1000000);
+    uint32_t horas    = total / 3600;
+    uint32_t minutos  = (total / 60) % 60;
+    uint32_t segundos = total % 60;
+    lv_label_set_text_fmt(ui_lblUptime, "%02u:%02u:%02u",
+                          (unsigned)horas, (unsigned)minutos, (unsigned)segundos);
+}
 /* Todo lo que se actualiza cada segundo */
 static void actualizar_datos(void)
 {
     actualizar_bateria();
     actualizar_temperatura();
+    actualizar_tiempo();
 }
 /* LVGL llama a esta funcion cada vez que pasa 1 segundo */
 static void al_pasar_un_segundo(lv_timer_t *t)
