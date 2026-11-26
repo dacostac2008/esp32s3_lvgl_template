@@ -71,6 +71,7 @@ static void actualizar_temperatura(void)
         return;
     }
     /* Sin %f: pasamos a decimas (41.3 -> 413) y separamos 41 y 3 */
+    mostrar_estado(celsius);
     int decimas = (int)(celsius * 10);
     lv_label_set_text_fmt(ui_lblTemp, "%d.%d C", decimas / 10, decimas % 10);
 }
