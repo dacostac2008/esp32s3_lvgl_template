@@ -2,6 +2,7 @@
 #include "scr_home.h"
 #include "scr_system.h"
 #include "scr_settings.h"
+#include "barra.h"
 #include "ui.h"             /* Squareline export — screen object declarations */
 #include "esp_log.h"
 
@@ -31,6 +32,7 @@ static ui_screens_t s_active_screen = SCREEN_MAX; /* SCREEN_MAX = "unknown" */
 
 void ui_screens_prepare(void)
 {
+        barra_crear();
     for (int i = 0; i < SCREEN_MAX; i++) {
         if (screen_configs[i].prepare) {
             screen_configs[i].prepare();
@@ -77,6 +79,7 @@ void ui_screens_step(void)
             if (screen_configs[current].init) {
                 screen_configs[current].init();
             }
+                        barra_marcar(current);
         }
         s_active_screen = current;
     }
