@@ -30,9 +30,41 @@ static ui_screens_t s_active_screen = SCREEN_MAX; /* SCREEN_MAX = "unknown" */
 
 /* ------------------------------------------------------------------ */
 
+/* Deslizar el dedo: izquierda = pantalla siguiente, derecha = anterior */
+static void al_deslizar(lv_event_t *e)
+{
+    (void)e;
+    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
+    ui_screens_t actual = ui_screens_get_current();
+    if (actual >= SCREEN_MAX) return;
+
+    /* Si todavia se esta animando el cambio anterior, no hacer nada */
+    if (lv_disp_get_default()->scr_to_load != NULL) return;
+
+    ui_screens_t destino;
+    lv_scr_load_anim_t animacion;
+    if (dir == LV_DIR_LEFT && actual + 1 < SCREEN_MAX) {
+        destino = actual + 1;
+        animacion = LV_SCR_LOAD_ANIM_MOVE_LEFT;
+    } else if (dir == LV_DIR_RIGHT && actual > 0) {
+        destino = actual - 1;
+        animacion = LV_SCR_LOAD_ANIM_MOVE_RIGHT;
+    } else {
+        return;   /* no hay pantalla para ese lado */
+    }
+
+    /* Que el mismo toque no "aprete" algo en la pantalla nueva */
+    lv_indev_wait_release(lv_indev_get_act());
+    lv_scr_load_anim(*screen_configs[destino].screen_obj, animacion, 200, 0, false);
+}
 void ui_screens_prepare(void)
 {
         barra_crear();
+
+    /* El gesto de deslizar se escucha en las tres pantallas */
+    for (int i = 0; i < SCREEN_MAX; i++) {
+        lv_obj_add_event_cb(*screen_configs[i].screen_obj, al_deslizar, LV_EVENT_GESTURE, NULL);
+    }
     for (int i = 0; i < SCREEN_MAX; i++) {
         if (screen_configs[i].prepare) {
             screen_configs[i].prepare();
