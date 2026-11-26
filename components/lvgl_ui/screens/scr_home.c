@@ -2,6 +2,7 @@
 #include "screens.h"
 #include "ui.h"
 #include "bsp_battery.h"
+#include "bsp_temp.h"
 #include "esp_log.h"
 
 static const char *TAG = "scr_home";
@@ -33,12 +34,23 @@ static void actualizar_bateria(void)
     lv_label_set_text_fmt(ui_lblBattery, "%d%%", pct);
 }
 
+static void actualizar_temperatura(void)
+{
+    float celsius = 0.0f;
+    if (bsp_temp_get_celsius(&celsius) != ESP_OK) {
+        lv_label_set_text(ui_lblTemp, "-- C");
+        return;
+    }
+    /* Sin %f: pasamos a decimas (41.3 -> 413) y separamos 41 y 3 */
+    int decimas = (int)(celsius * 10);
+    lv_label_set_text_fmt(ui_lblTemp, "%d.%d C", decimas / 10, decimas % 10);
+}
 /* Todo lo que se actualiza cada segundo */
 static void actualizar_datos(void)
 {
     actualizar_bateria();
+    actualizar_temperatura();
 }
-
 /* LVGL llama a esta funcion cada vez que pasa 1 segundo */
 static void al_pasar_un_segundo(lv_timer_t *t)
 {
