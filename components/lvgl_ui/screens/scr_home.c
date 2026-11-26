@@ -20,6 +20,19 @@ static int voltaje_a_porcentaje(float volts)
     return (int)((volts - 3.3f) * 100.0f / (4.2f - 3.3f));
 }
 
+/* Verde si hay mas de 50 %, amarillo entre 20 y 50 %, rojo 20 % o menos */
+static void pintar_arco(int pct)
+{
+    lv_color_t color;
+    if (pct > 50) {
+        color = lv_palette_main(LV_PALETTE_GREEN);
+    } else if (pct > 20) {
+        color = lv_palette_main(LV_PALETTE_AMBER);
+    } else {
+        color = lv_palette_main(LV_PALETTE_RED);
+    }
+    lv_obj_set_style_arc_color(ui_arcBattery, color, LV_PART_INDICATOR);
+}
 static void actualizar_bateria(void)
 {
     float volts = 0.0f;
@@ -33,6 +46,7 @@ static void actualizar_bateria(void)
     int pct = voltaje_a_porcentaje(volts);
     lv_arc_set_value(ui_arcBattery, pct);
     lv_label_set_text_fmt(ui_lblBattery, "%d%%", pct);
+    pintar_arco(pct);
 }
 
 static void actualizar_temperatura(void)
