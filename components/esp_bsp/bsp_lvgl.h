@@ -11,6 +11,7 @@ extern "C" {
 esp_err_t bsp_lvgl_init(void);
 lv_disp_t *bsp_lvgl_get_display(void);
 lv_indev_t *bsp_lvgl_get_touch_indev(void);
+void bsp_lvgl_backlight_fade(uint8_t from, uint8_t to, uint32_t time_ms);
 
 /* Optional: register LVGL FatFS driver (call after bsp_sdcard_init) */
 void bsp_lv_fs_fatfs_init(void);

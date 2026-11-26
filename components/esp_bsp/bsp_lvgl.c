@@ -198,3 +198,29 @@ void bsp_lv_fs_fatfs_init(void)
     fs_drv.dir_close_cb = fs_dir_close;
     lv_fs_drv_register(&fs_drv);
 }
+
+
+/* ---- Fade de la retroiluminacion ---- */
+
+/* LVGL necesita "algo" para identificar la animacion. El brillo no es un
+ * objeto de LVGL, asi que usamos la direccion de esta variable. */
+static uint8_t s_fade_id;
+
+/* LVGL llama a esta funcion en cada cuadro de la animacion,
+ * con el valor actual en "value" (de 0 a 100). */
+static void fade_cb(void *var, int32_t value)
+{
+    (void)var;
+    bsp_display_set_brightness((uint8_t)value);
+}
+
+void bsp_lvgl_backlight_fade(uint8_t from, uint8_t to, uint32_t time_ms)
+{
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, &s_fade_id);
+    lv_anim_set_exec_cb(&a, fade_cb);
+    lv_anim_set_values(&a, from, to);
+    lv_anim_set_time(&a, time_ms);
+    lv_anim_start(&a);
+}
