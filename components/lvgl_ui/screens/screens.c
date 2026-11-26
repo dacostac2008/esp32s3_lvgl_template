@@ -1,5 +1,7 @@
 #include "screens.h"
-#include "scr_main.h"
+#include "scr_home.h"
+#include "scr_system.h"
+#include "scr_settings.h"
 #include "ui.h"             /* Squareline export — screen object declarations */
 #include "esp_log.h"
 
@@ -18,7 +20,9 @@ static const char *TAG = "screens";
  * Squareline declares in its generated header (e.g. &ui_Screen1).
  */
 static const screen_config_t screen_configs[SCREEN_MAX] = {
-    [SCREEN_MAIN] = SCREEN_REGISTER("Main", ui_scrMain, main),
+    [SCREEN_HOME]     = SCREEN_REGISTER("Home",     ui_scrHome,     home),
+    [SCREEN_SYSTEM]   = SCREEN_REGISTER("System",   ui_scrSystem,   system),
+    [SCREEN_SETTINGS] = SCREEN_REGISTER("Settings", ui_scrSettings, settings),
 };
 
 static ui_screens_t s_active_screen = SCREEN_MAX; /* SCREEN_MAX = "unknown" */

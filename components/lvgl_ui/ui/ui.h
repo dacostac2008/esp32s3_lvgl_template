@@ -7,29 +7,45 @@ extern "C" {
 
 #include "lvgl.h"
 
-/**
- * Generic placeholder UI — stands in for a SquareLine Studio export so the
- * project builds and runs before you have a real one. Re-exporting from
- * SquareLine into this folder (see README) overwrites this file; nothing
- * outside `ui/` depends on it being exactly this content, only on the
- * symbols below existing.
- *
- * It doubles as a smoke test for the display + touch BSP:
- *   - drag the arc  -> exercises touch tracking (and reveals a wrong
- *                      swap_xy/mirror_x/mirror_y touch calibration)
- *   - tap the button -> exercises touch taps + LVGL click events, and
- *                       flips the screen background color so it's obvious
- *                       even without reading the label
- */
+/* UI de "ESP Dashboard" (Asignacion 2): solo crea los widgets, como un
+ * export de SquareLine. Los eventos y los datos van en screens/.
+ * Las pantallas dejan libres los ultimos UI_ALTO_BARRA px: ahi va la barra
+ * de navegacion, que se crea por codigo en screens/barra.c */
+#define UI_ALTO_BARRA   40
+
+#define COLOR_FONDO     0x121212
+#define COLOR_TARJETA   0x1F1F1F
+#define COLOR_ROJO      0xE53935
+#define COLOR_GRIS      0x9E9E9E
+
 void ui_init(void);
 
-extern lv_obj_t *ui_scrMain;
-extern lv_obj_t *ui_lblTitle;
-extern lv_obj_t *ui_lblSubtitle;
-extern lv_obj_t *ui_arcTest;
-extern lv_obj_t *ui_lblArcValue;
-extern lv_obj_t *ui_btnTap;
-extern lv_obj_t *ui_lblTapCount;
+/* Pantalla Inicio */
+extern lv_obj_t *ui_scrHome;
+extern lv_obj_t *ui_lblEstado;
+extern lv_obj_t *ui_btnActualizar;
+extern lv_obj_t *ui_arcBattery;
+extern lv_obj_t *ui_lblBattery;
+extern lv_obj_t *ui_lblTemp;
+extern lv_obj_t *ui_lblUptime;
+
+/* Pantalla Sistema */
+extern lv_obj_t *ui_scrSystem;
+extern lv_obj_t *ui_lblChip;
+extern lv_obj_t *ui_lblCpu;
+extern lv_obj_t *ui_lblFlash;
+extern lv_obj_t *ui_lblIdf;
+extern lv_obj_t *ui_lblHeap;
+extern lv_obj_t *ui_lblHeapMin;
+extern lv_obj_t *ui_btnResetMin;
+
+/* Pantalla Ajustes */
+extern lv_obj_t *ui_scrSettings;
+extern lv_obj_t *ui_sldBrillo;
+extern lv_obj_t *ui_lblBrillo;
+extern lv_obj_t *ui_swApagado;
+extern lv_obj_t *ui_lblCompilado;
+extern lv_obj_t *ui_btnRestaurar;
 
 #ifdef __cplusplus
 }
