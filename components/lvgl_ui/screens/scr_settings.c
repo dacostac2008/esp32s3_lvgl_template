@@ -60,6 +60,11 @@ void scr_settings_prepare(void)
     lv_obj_add_event_cb(ui_swApagado, al_cambiar_switch, LV_EVENT_VALUE_CHANGED, NULL);
     lv_obj_add_event_cb(ui_btnRestaurar, al_tocar_restaurar, LV_EVENT_CLICKED, NULL);
 
+    /* Arrastrar el slider o el switch en horizontal tambien cuenta como gesto
+     * y "burbujea" hasta la pantalla: te cambiaba de pantalla al ajustar el
+     * brillo. Se corta la burbuja en esos dos widgets. */
+    lv_obj_clear_flag(ui_sldBrillo, LV_OBJ_FLAG_GESTURE_BUBBLE);
+    lv_obj_clear_flag(ui_swApagado, LV_OBJ_FLAG_GESTURE_BUBBLE);
     /* __DATE__ y __TIME__ los completa el compilador con la fecha de hoy */
     lv_label_set_text(ui_lblCompilado, "Compilado: " __DATE__ " " __TIME__);
     ESP_LOGD(TAG, "prepare");
