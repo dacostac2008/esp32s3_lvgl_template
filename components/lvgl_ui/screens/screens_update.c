@@ -3,6 +3,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "esp_log.h"
+#include "entrada.h"
 
 #define UPDATE_QUEUE_DEPTH 16
 
@@ -22,14 +23,16 @@ static QueueHandle_t s_queue = NULL;
 
 typedef void (*handler_fn_t)(void *data);
 
-/* Placeholder — remove when UI_UPDATE_MAX has real commands */
-#if UI_UPDATE_MAX == 0
-static const handler_fn_t s_handlers[] = { NULL };
-#else
+/* Ya estamos dentro de LVGL: ahora si se puede apretar el boton de la pantalla */
+static void al_apretar_boton_fisico(void *data)
+{
+    (void)data;
+    entrada_apretar();
+}
+
 static const handler_fn_t s_handlers[UI_UPDATE_MAX] = {
-    /* [UI_UPDATE_TEMPERATURE] = handle_temperature, */
+    [UI_UPDATE_BOTON_FISICO] = al_apretar_boton_fisico,
 };
-#endif
 
 /* ------------------------------------------------------------------ */
 

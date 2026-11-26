@@ -3,6 +3,7 @@
 #include "scr_system.h"
 #include "scr_settings.h"
 #include "barra.h"
+#include "entrada.h"
 #include "ui.h"             /* Squareline export — screen object declarations */
 #include "esp_log.h"
 
@@ -60,6 +61,7 @@ static void al_deslizar(lv_event_t *e)
 void ui_screens_prepare(void)
 {
         barra_crear();
+        entrada_iniciar();
 
     /* El gesto de deslizar se escucha en las tres pantallas */
     for (int i = 0; i < SCREEN_MAX; i++) {
